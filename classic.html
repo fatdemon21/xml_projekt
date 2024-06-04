@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kristijan Mesarić _ Projekt XML</title>
+    <link rel="stylesheet" href="css_main.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a href="newmovies.html">New Movies</a>
+        <a id="home" href="classic.html">Classics</a>
+    </div>
+
+    <div class="main-content">
+        <div class="news-text"><h1>Filmski Klasici</h1></div>
+        <div class="news-section" id="news-section">
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="https://www.instagram.com/mesaric.kristijan/" target="_blank">Instagram</a>
+        <a href="https://www.imdb.com" target="_blank">IMDB</a>
+        <a href="https://github.com/fatdemon21" target="_blank">GitHub</a>
+        <a href="https://www.youtube.com/channel/UCtjoINQQ49fOIEP41bojNqg" target="_blank">YouTube</a>
+    </div>
+
+    <script type="application/xml" id="movies-data">
+        <movies>
+            <movie>
+                <title>The Shawshank Redemption</title>
+                <releaseYear>1994</releaseYear>
+                <director>Frank Darabont</director>
+                <genre>Drama</genre>
+                <image>shaw.jpg</image>
+            </movie>
+            <movie>
+                <title>The Godfather</title>
+                <releaseYear>1972</releaseYear>
+                <director>Francis Ford Coppola</director>
+                <genre>Crime, Drama</genre>
+                <image>god.jpg</image>
+            </movie>
+            <movie>
+                <title>The Dark Knight</title>
+                <releaseYear>2008</releaseYear>
+                <director>Christopher Nolan</director>
+                <genre>Action, Crime, Drama</genre>
+                <image>dark.jpg</image>
+            </movie>
+            <movie>
+                <title>Schindler's List</title>
+                <releaseYear>1993</releaseYear>
+                <director>Steven Spielberg</director>
+                <genre>Biography, Drama, History</genre>
+                <image>list.jpg</image>
+            </movie>
+            <movie>
+                <title>The Lord of the Rings: The Return of the King</title>
+                <releaseYear>2003</releaseYear>
+                <director>Peter Jackson</director>
+                <genre>Action, Adventure, Drama</genre>
+                <image>lotr1.jpg</image>
+            </movie>
+            <movie>
+                <title>Pulp Fiction</title>
+                <releaseYear>1994</releaseYear>
+                <director>Quentin Tarantino</director>
+                <genre>Crime, Drama</genre>
+                <image>fiction.jpg</image>
+            </movie>
+            <movie>
+                <title>The Lord of the Rings: The Fellowship of the Ring</title>
+                <releaseYear>2001</releaseYear>
+                <director>Peter Jackson</director>
+                <genre>Action, Adventure, Drama</genre>
+                <image>lotr2.jpg</image>
+            </movie>
+            <movie>
+                <title>Forrest Gump</title>
+                <releaseYear>1994</releaseYear>
+                <director>Robert Zemeckis</director>
+                <genre>Drama, Romance</genre>
+                <image>forrest.jpg</image>
+            </movie>
+            <movie>
+                <title>The Matrix</title>
+                <releaseYear>1999</releaseYear>
+                <director>Lilly and Lana Wachowski</director>
+                <genre>Action, Sci-fi</genre>
+                <image>matrix.jpg</image>
+            </movie>
+            <movie>
+                <title>Fight Club</title>
+                <releaseYear>1999</releaseYear>
+                <director>David Fincher</director>
+                <genre>Drama</genre>
+                <image>fight.jpg</image>
+            </movie>
+            <movie>
+                <title>The Lord of the Rings: The Two Towers</title>
+                <releaseYear>2002</releaseYear>
+                <director>Peter Jackson</director>
+                <genre>Action, Adventure, Drama</genre>
+                <image>lotr3.jpg</image>
+            </movie>
+        </movies>
+    </script>
+
+    <script>
+        const xmlData = document.getElementById('movies-data').textContent.trim();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
+
+        console.log('XML Data:', xmlDoc);
+
+        if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+            console.error('Error parsing XML');
+        } else {
+            const movies = xmlDoc.getElementsByTagName('movie');
+            const newsSection = document.getElementById('news-section');
+
+            for (let i = 0; i < movies.length; i++) {
+                const title = movies[i].getElementsByTagName('title')[0].textContent;
+                const releaseYear = movies[i].getElementsByTagName('releaseYear')[0].textContent;
+                const director = movies[i].getElementsByTagName('director')[0].textContent;
+                const genre = movies[i].getElementsByTagName('genre')[0].textContent;
+                const image = movies[i].getElementsByTagName('image')[0].textContent;
+
+                console.log('Movie:', { title, releaseYear, director, genre, image });
+
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('news-item');
+
+                newsItem.innerHTML = `
+                    <img src="${image}" alt="${title}">
+                    <div>
+                        <h2>${title}</h2>
+                        <p><strong>Release Year:</strong> ${releaseYear}</p>
+                        <p><strong>Director:</strong> ${director}</p>
+                        <p><strong>Genre:</strong> ${genre}</p>
+                    </div>
+                `;
+
+                newsSection.appendChild(newsItem);
+            }
+        }
+    </script>
+</body>
+</html>

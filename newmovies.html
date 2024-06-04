@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kristijan Mesarić _ Projekt XML</title>
+    <link rel="stylesheet" href="css_main.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <a href="mainpage.html">Home</a>
+        <a id="home" href="newmovies.html">New Movies</a>
+        <a href="classic.html">Classics</a>
+    </div>
+
+    <div class="main-content">
+        <div class="news-text"><h1>Novi filmovi</h1></div>
+        <div class="news-section" id="news-section">
+        </div>
+    </div>
+
+    <div class="footer">
+        <a href="https://www.instagram.com/mesaric.kristijan/" target="_blank">Instagram</a>
+        <a href="https://www.imdb.com" target="_blank">IMDB</a>
+        <a href="https://github.com/fatdemon21" target="_blank">GitHub</a>
+        <a href="https://www.youtube.com/channel/UCtjoINQQ49fOIEP41bojNqg" target="_blank">YouTube</a>
+    </div>
+
+    <script type="application/xml" id="movies-data">
+        <movies>
+            <movie>
+                <title>Bad Boys: Ride or Die</title>
+                <releaseYear>2024</releaseYear>
+                <director>Adil El Arbi and Bilall Fallah</director>
+                <genre>Action, Comedy, Adventure</genre>
+                <image>badboys.jpg</image>
+            </movie>
+            <movie>
+                <title>Inside Out 2</title>
+                <releaseYear>2024</releaseYear>
+                <director>Kelsey Mann</director>
+                <genre>Animation, Adventure, Comedy</genre>
+                <image>inside.jpg</image>
+            </movie>
+            <movie>
+                <title>Dune: Part Two</title>
+                <releaseYear>2024</releaseYear>
+                <director>Denis Villeneuve</director>
+                <genre>Action, Adventure, Drama</genre>
+                <image>dune2.jpg</image>
+            </movie>
+            <movie>
+                <title>Godzilla X Kong: The New Empire</title>
+                <releaseYear>2024</releaseYear>
+                <director>Adam Wingard</director>
+                <genre>Action, Adventure, Fantasy</genre>
+                <image>godzilla.jpg</image>
+            </movie>
+            <movie>
+                <title>The Fall Guy</title>
+                <releaseYear>2024</releaseYear>
+                <director>David Leitch</director>
+                <genre>Action, Comedy, Drama</genre>
+                <image>fallguy.jpg</image>
+            </movie>
+            <movie>
+                <title>Civil war</title>
+                <releaseYear>2024</releaseYear>
+                <director>Alex Garland</director>
+                <genre>Action, Adventure, Thriller</genre>
+                <image>civil.jpg</image>
+            </movie>
+            <movie>
+                <title>Kingdom of the Planet of the Apes</title>
+                <releaseYear>2024</releaseYear>
+                <director>Wes Bill</director>
+                <genre>Action, Adventure, Sci-fi</genre>
+                <image>planet.jpg</image>
+            </movie>
+        </movies>
+    </script>
+
+    <script>
+        const xmlData = document.getElementById('movies-data').textContent.trim();
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlData, 'application/xml');
+
+        console.log('XML Data:', xmlDoc);
+
+        if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+            console.error('Error parsing XML');
+        } else {
+            const movies = xmlDoc.getElementsByTagName('movie');
+            const newsSection = document.getElementById('news-section');
+
+            for (let i = 0; i < movies.length; i++) {
+                const title = movies[i].getElementsByTagName('title')[0].textContent;
+                const releaseYear = movies[i].getElementsByTagName('releaseYear')[0].textContent;
+                const director = movies[i].getElementsByTagName('director')[0].textContent;
+                const genre = movies[i].getElementsByTagName('genre')[0].textContent;
+                const image = movies[i].getElementsByTagName('image')[0].textContent;
+
+                console.log('Movie:', { title, releaseYear, director, genre, image });
+
+                const newsItem = document.createElement('div');
+                newsItem.classList.add('news-item');
+
+                newsItem.innerHTML = `
+                    <img src="${image}" alt="${title}">
+                    <div>
+                        <h2>${title}</h2>
+                        <p><strong>Release Year:</strong> ${releaseYear}</p>
+                        <p><strong>Director:</strong> ${director}</p>
+                        <p><strong>Genre:</strong> ${genre}</p>
+                    </div>
+                `;
+
+                newsSection.appendChild(newsItem);
+            }
+        }
+    </script>
+</body>
+</html>
